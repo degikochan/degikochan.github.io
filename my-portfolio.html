@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Delgersaikhan Zayasaikhan — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #F5F0E8;
+      --ink: #1A1612;
+      --rust: #C85A2A;
+      --rust-light: #F0D5C5;
+      --muted: #7A7268;
+      --border: rgba(26,22,18,0.12);
+      --serif: 'DM Serif Display', Georgia, serif;
+      --sans: 'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* naviogation */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 2.5rem;
+      background: rgba(245,240,232,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      transition: box-shadow 0.3s;
+    }
+    nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.08); }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex; gap: 2rem; list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--rust); }
+
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px; cursor: pointer;
+      background: none; border: none; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 1.5px;
+      background: var(--ink); transition: all 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+    .mobile-menu {
+      display: none; position: fixed; top: 65px; left: 0; right: 0;
+      background: var(--cream); border-bottom: 1px solid var(--border);
+      padding: 1.5rem 2.5rem; z-index: 99;
+    }
+    .mobile-menu.open { display: block; }
+    .mobile-menu a {
+      display: block; padding: 0.7rem 0;
+      text-decoration: none; color: var(--ink); font-size: 1.1rem;
+      border-bottom: 1px solid var(--border); cursor: pointer;
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+
+    /* pages */
+    .page { display: none; min-height: 100vh; padding-top: 65px; }
+    .page.active { display: block; }
+
+    /* home */
+    #home {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 0 2.5rem;
+    }
+    #home.active { display: flex; }
+
+    .home-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 6rem 0 4rem;
+    }
+
+    .home-eyebrow {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--rust);
+      font-weight: 500;
+      margin-bottom: 1.2rem;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .home-eyebrow::before {
+      content: '';
+      display: inline-block; width: 32px; height: 1px; background: var(--rust);
+    }
+
+    .home-name {
+      font-family: var(--serif);
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+    .home-name em { font-style: italic; color: var(--rust); }
+
+    .home-intro {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 520px;
+      font-weight: 300;
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
+    }
+
+    .home-cta {
+      display: inline-flex; gap: 1rem; flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.8rem;
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.25s;
+      border: none;
+    }
+    .btn-primary {
+      background: var(--ink);
+      color: var(--cream);
+    }
+    .btn-primary:hover { background: var(--rust); }
+    .btn-outline {
+      background: transparent;
+      color: var(--ink);
+      border: 1.5px solid var(--ink);
+    }
+    .btn-outline:hover { border-color: var(--rust); color: var(--rust); }
+
+    .home-scroll-hint {
+      margin-top: 5rem;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .scroll-line {
+      width: 40px; height: 1px; background: var(--muted);
+      position: relative; overflow: hidden;
+    }
+    .scroll-line::after {
+      content: ''; position: absolute; top: 0; left: -100%;
+      width: 100%; height: 100%; background: var(--rust);
+      animation: scrollLine 2s ease infinite;
+    }
+    @keyframes scrollLine {
+      0% { left: -100%; } 100% { left: 100%; }
+    }
+
+    .home-photo {
+      position: absolute;
+      right: -10%; top: 50%;
+      transform: translateY(-50%);
+      width: 360px; height: 480px;
+      overflow: hidden;
+    }
+    .home-photo img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .home-photo-placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, var(--rust-light) 0%, #E8D5C0 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: var(--rust); gap: 10px;
+    }
+    .home-photo-placeholder svg { opacity: 0.5; }
+    .home-photo-placeholder p { font-size: 0.8rem; opacity: 0.6; }
+
+    .home-layout {
+      position: relative;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2.5rem;
+    }
+
+    /*about */
+    #about { padding: 5rem 2.5rem 5rem; }
+
+    .section-header {
+      max-width: 800px; margin: 0 auto 4rem;
+    }
+    .section-number {
+      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--rust); font-weight: 500; margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--ink);
+    }
+    .section-title em { font-style: italic; color: var(--rust); }
+
+    .about-grid {
+      max-width: 1000px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: start;
+    }
+
+    .about-photo-wrap {
+      position: relative;
+    }
+    .about-photo {
+      width: 100%; aspect-ratio: 3/4; overflow: hidden;
+      background: var(--rust-light);
+    }
+    .about-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .about-photo-placeholder {
+      width: 100%; height: 100%; min-height: 360px;
+      background: linear-gradient(160deg, var(--rust-light), #E8DDCE);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: var(--rust); gap: 10px;
+    }
+    .about-photo-border {
+      position: absolute; top: 16px; left: 16px; right: -16px; bottom: -16px;
+      border: 1.5px solid var(--rust); z-index: -1;
+    }
+
+    .about-content h3 {
+      font-family: var(--serif); font-size: 1.5rem;
+      letter-spacing: -0.01em; margin-bottom: 0.8rem; margin-top: 2rem;
+    }
+    .about-content h3:first-child { margin-top: 0; }
+    .about-content p { color: var(--muted); font-weight: 300; margin-bottom: 1rem; }
+
+    .skills-grid {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 0.5rem;
+    }
+    .skill-tag {
+      padding: 5px 14px;
+      font-size: 0.8rem; font-weight: 500;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: white;
+      letter-spacing: 0.02em;
+    }
+    .skill-tag.highlight { background: var(--rust-light); border-color: var(--rust); color: var(--rust); }
+
+    /* projects */
+    #projects { padding: 5rem 2.5rem 5rem; background: var(--ink); color: var(--cream); }
+    #projects .section-number { color: var(--rust); }
+    #projects .section-title { color: var(--cream); }
+    #projects .section-title em { color: var(--rust); }
+    #projects .section-header { margin-bottom: 3rem; }
+
+    .projects-grid {
+      max-width: 1000px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 0;
+      overflow: hidden;
+      transition: transform 0.3s, border-color 0.3s;
+      cursor: default;
+    }
+    .project-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(200,90,42,0.5);
+    }
+
+    .project-thumb {
+      width: 100%; aspect-ratio: 16/9;
+      background: rgba(255,255,255,0.06);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; position: relative;
+    }
+    .project-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .project-thumb-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 8px; color: rgba(245,240,232,0.3);
+    }
+
+    .project-body { padding: 1.2rem 1.4rem 1.5rem; }
+    .project-tag {
+      font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--rust); font-weight: 500; margin-bottom: 0.5rem;
+    }
+    .project-title {
+      font-family: var(--serif);
+      font-size: 1.2rem; color: var(--cream);
+      letter-spacing: -0.01em; margin-bottom: 0.5rem; line-height: 1.3;
+    }
+    .project-desc {
+      font-size: 0.85rem; color: rgba(245,240,232,0.5);
+      font-weight: 300; line-height: 1.6;
+    }
+
+    .project-links {
+      display: flex; gap: 1rem; margin-top: 1rem;
+    }
+    .project-link {
+      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em;
+      color: rgba(245,240,232,0.4); text-decoration: none; font-weight: 500;
+      display: flex; align-items: center; gap: 5px;
+      transition: color 0.2s;
+    }
+    .project-link:hover { color: var(--rust); }
+    .project-link svg { width: 12px; height: 12px; }
+
+    /*goals section */
+    .goals-section {
+      max-width: 1000px; margin: 4rem auto 0;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 3rem;
+    }
+    .goals-section h3 {
+      font-family: var(--serif); font-size: 1.5rem;
+      color: var(--cream); margin-bottom: 1.5rem;
+    }
+    .goals-list {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1rem; list-style: none;
+    }
+    .goals-list li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 0.9rem; color: rgba(245,240,232,0.6); font-weight: 300;
+    }
+    .goals-list li::before {
+      content: ''; display: inline-block;
+      width: 6px; height: 6px; background: var(--rust);
+      margin-top: 8px; flex-shrink: 0;
+    }
+
+    /* footer */
+    footer {
+      background: var(--ink);
+      padding: 2rem 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    footer p { font-size: 0.8rem; color: rgba(245,240,232,0.35); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a {
+      font-size: 0.8rem; color: rgba(245,240,232,0.35);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--rust); }
+
+    /* animations */
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    /* responsives */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      #home { padding: 0 1.5rem; }
+      .home-inner { padding: 5rem 0 3rem; }
+      .home-photo { display: none; }
+
+      #about { padding: 4rem 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .about-photo-border { display: none; }
+
+      #projects { padding: 4rem 1.5rem; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .goals-list { grid-template-columns: 1fr; }
+
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .projects-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- navigation -->
+<nav id="navbar">
+  <a class="nav-logo" onclick="showPage('home')">DZ.</a>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')" data-page="home" class="active">Home</a></li>
+    <li><a onclick="showPage('about')" data-page="about">About</a></li>
+    <li><a onclick="showPage('projects')" data-page="projects">Projects</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a onclick="showPage('home'); closeMobile()">Home</a>
+  <a onclick="showPage('about'); closeMobile()">About</a>
+  <a onclick="showPage('projects'); closeMobile()">Projects</a>
+</div>
+
+
+<!-- home page -->
+<section class="page active" id="home">
+  <div class="home-layout">
+    <div class="home-inner">
+      <p class="home-eyebrow fade-in">My portfolio</p>
+      <h1 class="home-name fade-in">
+        Hi, I'm<br><em>Delgersaikhan Zayasaikhan.</em>
+      </h1>
+      <p class="home-intro fade-in">
+        A student passionate about technology, innovations, and making things that matter while constantly exploring the intersection of creativity and logic.
+      </p>
+      <div class="home-cta fade-in">
+        <button class="btn btn-primary" onclick="showPage('projects')">View My Work</button>
+        <button class="btn btn-outline" onclick="showPage('about')">About Me</button>
+      </div>
+    </div>
+
+    <div class="home-photo">
+        <img src ="Face photo jan 21 2026.jpg" alt = "my face photo">
+    </div>
+  </div>
+</section>
+
+
+<!-- about -->
+<section class="page" id="about">
+  <div class="section-header" style="padding: 0 2.5rem;">
+    <p class="section-number fade-in">01 — About</p>
+    <h2 class="section-title fade-in">Who I <em>am.</em></h2>
+  </div>
+
+  <div class="about-grid">
+    <div class="about-photo-wrap fade-in">
+      <div class="about-photo">
+        <img src = "Face photo jan 21 2026.jpg" alt = "my face photo">
+      </div>
+      <div class="about-photo-border"></div>
+    </div>
+
+    <!-- content -->
+    <div class="about-content">
+      <h3 class="fade-in">Background</h3>
+      <p class="fade-in">I'm a senior student at Ulaanbaatar Elite International School. Coding and computer science has been my passion since Covid, which is why I'm looking forward to study computer science, specifically AI development, and one day work as an AI engineer who works to implement smart and convenient AI system in people's lives.</p>
+      <p class="fade-in">Even outside coding, I seek my creativity pursuit in music (piano, guitar, compositions), as I constantly challenge myself to think outside the box and come up with something original .</p>
+
+      <h3 class="fade-in">Skills</h3>
+      <div class="skills-grid fade-in">
+        <span class="skill-tag highlight">HTML & CSS</span>
+        <span class="skill-tag highlight">JavaScript</span>
+        <span class="skill-tag highlight">Python</span>
+        <span class="skill-tag">Music</span>
+        <span class="skill-tag">Piano</span>
+        <span class="skill-tag">Guitar</span>
+        <span class="skill-tag">Compositions</span>
+        <span class="skill-tag">Social skills</span>
+        <span class="skill-tag">Research</span>
+        <span class="skill-tag">Languages</span>
+      </div>
+
+      <h3 class="fade-in">Interests</h3>
+      <p class="fade-in">AI development · System engineer · Photography · Sustainability · Music Production · Competitive Programming · Activism</p>
+
+    </div>
+  </div>
+</section>
+
+<!-- project page -->
+<section class="page" id="projects">
+  <div class="section-header" style="padding: 0 2.5rem;">
+    <p class="section-number fade-in">02 — Work</p>
+    <h2 class="section-title fade-in"><em>My Achievements</em></h2>
+  </div>
+
+  <div class="projects-grid">
+
+    <!-- Card 1 -->
+    <div class="project-card fade-in">
+      <div class="project-body">
+        <p class="project-tag">Music</p>
+        <h3 class="project-title">Sheet Music Compositions</h3>
+        <p class="project-desc">Self-taught piano, guitar and compositions;
+Created 60+ arrangements, sheet music, and compositions, uploading them
+on online services, accumulating 550k+ total views, while occasionally making
+profit from commissions.</p>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="project-card fade-in" style="transition-delay:0.1s">
+      <div class="project-body">
+        <p class="project-tag">UEIS Research Club</p>
+        <h3 class="project-title">President</h3>
+        <p class="project-desc">Mentored members in academic
+research & writing; directed applied research addressing issues in
+school/community. </p>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="project-card fade-in" style="transition-delay:0.2s">
+      <div class="project-body">
+        <p class="project-tag">Elite International Model United Nations</p>
+        <h3 class="project-title">The Head of Delegate Affairs</h3>
+        <p class="project-desc">Organized the school Model United
+Nations, leading 5 staff in my department to work with 350+ applicants;
+coordinated cross-department tasks, streamlined communication and
+ensured smooth event operations. </p>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="project-card fade-in" style="transition-delay:0.2s">
+      <div class="project-body">
+        <p class="project-tag">Global Crown</p>
+        <h3 class="project-title">English Language Tutor</h3>
+        <p class="project-desc">Mentored 60+ English learners, building
+individual study plans targeting strengths & weaknesses; advanced all
+students to higher curriculum levels.</p>
+      </div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="project-card fade-in" style="transition-delay:0.2s">
+      <div class="project-body">
+        <p class="project-tag">UEIS U19 Volleyball Team</p>
+        <h3 class="project-title">Starting Libero</h3>
+        <p class="project-desc">Chosen as starting libero
+within weeks; consistency, key defensive plays and full-match contribution
+helped secure our team's first Empathy Cup gold.
+</p>
+      </div>
+    </div>
+
+    <!-- Card 6 -->
+    <div class="project-card fade-in" style="transition-delay:0.2s">
+      <div class="project-body">
+        <p class="project-tag">UEIS U19 Volleyball Team</p>
+        <h3 class="project-title">Starting Libero</h3>
+        <p class="project-desc"> Trained weekly and competed in 2 half
+marathons since June; built endurance and discipline through consistent 5-
+10+km runs every weekend.
+</p>
+      </div>
+    </div>
+
+    <!-- Card 7 -->
+    <div class="project-card fade-in" style="transition-delay:0.2s">
+      <div class="project-body">
+        <p class="project-tag">EJU & JLPT Exams</p>
+        <h3 class="project-title">Staff/organizer</h3>
+        <p class="project-desc"> Coordinated and organized
+EJU&JLPT exams; managed registration, logistics, and seating, ensuring
+smooth testing operations of up to 3000 examinees.
+</p>
+      </div>
+    </div>
+
+    <!-- Card 8 -->
+    <div class="project-card fade-in" style="transition-delay:0.2s">
+      <div class="project-body">
+        <p class="project-tag">UB Japan Fes</p>
+        <h3 class="project-title">Volunteer Staff</h3>
+        <p class="project-desc"> Worked with JICA (Japan International
+Cooperation Agency) to help organize the annual UB Japan Fes; worked as an
+interpreter, selling services in Japanese, English, and Mongolian; generated
+first profit in 3 years.</p>
+      </div>
+    </div>
+
+      <!-- Card 8 -->
+    <div class="project-card fade-in" style="transition-delay:0.2s">
+      <div class="project-body">
+        <p class="project-tag">Coding</p>
+        <h3 class="project-title">Independent learning</h3>
+        <p class="project-desc">Self-taught coding languages such as HTML, CSS, Javascript, SQL, and Python over the course of 4 years; built websites, games and other independent projects, as well as completing courses on Khan Academy and FreeCodeCamp.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Goals -->
+  <div class="goals-section fade-in">
+    <h3>Future Goals</h3>
+    <ul class="goals-list">
+      <li>Study computer science as well as explore other fields of interests</li>
+      <li>Build hands-on experience from internships and part-times</li>
+      <li>Work on my own software programs</li>
+      <li>Contribute to research at institutions</li>
+      <li>Actively take part in coding competitions</li>
+      <li>Build something to contribute to my communities and help them out</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- footer -->
+<footer>
+  <p>© 2026 Delgersaikhan Zayasaikhan. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="https://github.com" target="_blank">GitHub</a>
+    <a href="https://www.instagram.com/degiko10/" target="_blank">Instagram</a>
+    <a href="mailto:degizaya1025@gmail.com">Email</a>
+  </div>
+</footer>
+
+<!--Javascript-->
+<script>
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('[data-page]').forEach(a => a.classList.remove('active'));
+    const target = document.getElementById(id);
+    target.classList.add('active');
+    const link = document.querySelector(`[data-page="${id}"]`);
+    if (link) link.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(triggerFadeIns, 80);
+  }
+
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+  function closeMobile() {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  }
+
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 10);
+  });
+
+ 
+  function triggerFadeIns() {
+    const els = document.querySelectorAll('.page.active .fade-in:not(.visible)');
+    els.forEach((el, i) => {
+      setTimeout(() => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight + 60) el.classList.add('visible');
+      }, i * 80);
+    });
+  }
+
+  window.addEventListener('scroll', triggerFadeIns, { passive: true });
+  triggerFadeIns();
+</script>
+</body>
+</html>
